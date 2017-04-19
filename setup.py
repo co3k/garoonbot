@@ -18,4 +18,8 @@ setup(
         'Programming Language :: Python :: 3',
         'Topic :: Office/Business :: Groupware',
     ],
+    install_requires=[
+        'lxml==3.5.0',
+        'requests==2.8.1',
+    ],
 )

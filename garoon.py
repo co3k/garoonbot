@@ -4,7 +4,6 @@ import sys
 
 from garoonbot import api, conf, fmt, schedule, slack
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-u', '--user', type=int, help='User id')
@@ -29,12 +28,12 @@ if __name__ == "__main__":
             conf.settings['slack'][key] = getattr(args, key)
 
     if args.user:
-        xml = api.get_user_schedule(date=args.date, user_id=args.user)
+        xml = api.get_user_schedule(settings=conf.settings, date=args.date, user_id=args.user)
         with_facility = True
     else:
-        xml = api.get_facility_schedule(date=args.date, facility_id=args.facility)
+        xml = api.get_facility_schedule(settings=conf.settings, date=args.date, facility_id=args.facility)
         with_facility = False
 
-    slack.send('', '\n\n'.join((
+    slack.send(conf.settings, '', '\n\n'.join((
         fmt.date(args.date),
         fmt.events(schedule.find_events(xml), with_facility))))

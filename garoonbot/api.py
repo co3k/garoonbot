@@ -4,9 +4,6 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.poolmanager import PoolManager
 
-from garoonbot.conf import settings
-
-
 tmpl = '''<?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
   <soap:Header>
@@ -40,7 +37,7 @@ class TLSAdapter(HTTPAdapter):
                                        ssl_version=ssl.PROTOCOL_TLSv1)
 
 
-def _get_schedule(date, params):
+def _get_schedule(settings, date, params):
     s = requests.Session()
     s.mount('https://', TLSAdapter(max_retries=5))
     return s.post(
@@ -53,9 +50,9 @@ def _get_schedule(date, params):
         **settings['garoon'].get('options', {})).text
 
 
-def get_user_schedule(date, user_id):
-    return _get_schedule(date, '<user id="%d"></user>' % user_id)
+def get_user_schedule(settings, date, user_id):
+    return _get_schedule(settings, date, '<user id="%d"></user>' % user_id)
 
 
-def get_facility_schedule(date, facility_id):
-    return _get_schedule(date, '<facility id="%d"></facility>' % facility_id)
+def get_facility_schedule(settings, date, facility_id):
+    return _get_schedule(settings, date, '<facility id="%d"></facility>' % facility_id)

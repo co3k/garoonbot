@@ -2,10 +2,7 @@ import json
 
 import requests
 
-from garoonbot.conf import settings
-
-
-def send(head, detail=None):
+def send(settings, head, detail=None):
     """
     Send message to Slack
 
